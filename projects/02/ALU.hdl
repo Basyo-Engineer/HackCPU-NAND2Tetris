@@ -42,4 +42,10 @@ CHIP ALU {
 
     PARTS:
     //// Replace this comment with your code.
+    Not(in=zx, out=nzx);
+    And16(a=x[0..15], b=nzx, out=azx[0..15]);
+    Not(in=zy, out=nzy);
+    And16(a=y[0..15], b=nzy, out=azy[0..15]);
+
+    
 }
