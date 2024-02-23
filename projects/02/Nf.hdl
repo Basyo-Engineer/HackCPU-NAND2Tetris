@@ -1,0 +1,9 @@
+CHIP Nf {
+    IN in[16];
+    OUT out;
+
+    PARTS:
+    //// Replace this comment with your code.
+    Or(a=in[15], b=false, out=out);
+
+}
