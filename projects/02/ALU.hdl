@@ -42,8 +42,6 @@ CHIP ALU {
 
     PARTS:
     //// Replace this comment with your code.
-
-
     //zero x,y
     //[0..15]のような記述は入力時のみ
     Mux16(a=x[0..15], b=false, sel=zx, out=zx1);
@@ -55,18 +53,15 @@ CHIP ALU {
     Not16(in=zy1, out=negy);
     Mux16(a=zy1, b=negy, sel=ny, out=outy);
 
-    
-    Add16(a=outx, b=outy, out=addxy);
-    And16(a=outx, b=outy, out=andxy);
-    Mux16(a=addxy, b=andxy, sel=f, out=outxy);
+    Add16(a=outx, b=outy, out=xaddy);
+    And16(a=outx, b=outy, out=xandy);
+    Mux16(a=xandy, b=xaddy, sel=f, out=outxy);
 
-    Not16(in=outxy, out=negout);
-    Mux16(a=outxy, b=negout, sel=no, out=out1);
+    Not16(in=outxy, out=noutxy);
+    Mux16(a=outxy, b=noutxy, sel=no, out=out1);
+
     Or16(a=out1, b=false, out=out[0..15]);
-
-
     Or16way(in=out1, out=nzr);
     Not(in=nzr, out=zr);
-
     Nf(in=out1, out=ng);
 }
