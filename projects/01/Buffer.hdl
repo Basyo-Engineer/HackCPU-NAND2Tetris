@@ -1,0 +1,8 @@
+CHIP Buffer {
+    IN in;
+    OUT out;
+
+    PARTS:
+    //// Replace this comment with your code.
+    Or(a=in, b=false, out=out);
+}
