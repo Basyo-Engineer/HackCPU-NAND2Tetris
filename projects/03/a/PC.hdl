@@ -19,4 +19,82 @@ CHIP PC {
     
     PARTS:
     //// Replace this comment with your code.
+    //RegLoad Mode
+    Or(a=load, b=inc, out=loic);
+    Or(a=loic, b=reset, out=rli);
+
+    //1bit PC Block
+    Mux(a=true, b=in[0], sel=load, out=ink0);
+    Mux(a=out0, b=in[1], sel=load, out=ink1);
+    Mux(a=out1, b=in[2], sel=load, out=ink2);
+    Mux(a=out2, b=in[3], sel=load, out=ink3);
+    Mux(a=out3, b=in[4], sel=load, out=ink4);
+    Mux(a=out4, b=in[5], sel=load, out=ink5);
+    Mux(a=out5, b=in[6], sel=load, out=ink6);
+    Mux(a=out6, b=in[7], sel=load, out=ink7);
+    Mux(a=out7, b=in[8], sel=load, out=ink8);
+    Mux(a=out8, b=in[9], sel=load, out=ink9);
+    Mux(a=out9, b=in[10], sel=load, out=ink10);
+    Mux(a=out10, b=in[11], sel=load, out=ink11);
+    Mux(a=out11, b=in[12], sel=load, out=ink12);
+    Mux(a=out12, b=in[13], sel=load, out=ink13);
+    Mux(a=out13, b=in[14], sel=load, out=ink14);
+    Mux(a=out14, b=in[15], sel=load, out=ink15);
+
+
+    Mux(a=ink0, b=false, sel=reset, out=in0);
+    Mux(a=ink1, b=false, sel=reset, out=in1);
+    Mux(a=ink2, b=false, sel=reset, out=in2);
+    Mux(a=ink3, b=false, sel=reset, out=in3);
+    Mux(a=ink4, b=false, sel=reset, out=in4);
+    Mux(a=ink5, b=false, sel=reset, out=in5);
+    Mux(a=ink6, b=false, sel=reset, out=in6);
+    Mux(a=ink7, b=false, sel=reset, out=in7);
+    Mux(a=ink8, b=false, sel=reset, out=in8);
+    Mux(a=ink9, b=false, sel=reset, out=in9);
+    Mux(a=ink10, b=false, sel=reset, out=in10);
+    Mux(a=ink11, b=false, sel=reset, out=in11);
+    Mux(a=ink12, b=false, sel=reset, out=in12);
+    Mux(a=ink13, b=false, sel=reset, out=in13);
+    Mux(a=ink14, b=false, sel=reset, out=in14);
+    Mux(a=ink15, b=false, sel=reset, out=in15);
+
+    Bit(in=in0, load=rli, out=out0);
+    Bit(in=in1, load=rli, out=out1);
+    Bit(in=in2, load=rli, out=out2);
+    Bit(in=in3, load=rli, out=out3);
+    Bit(in=in4, load=rli, out=out4);
+    Bit(in=in5, load=rli, out=out5);
+    Bit(in=in6, load=rli, out=out6);
+    Bit(in=in7, load=rli, out=out7);
+    Bit(in=in8, load=rli, out=out8);
+    Bit(in=in9, load=rli, out=out9);
+    Bit(in=in10, load=rli, out=out10);
+    Bit(in=in11, load=rli, out=out11);
+    Bit(in=in12, load=rli, out=out12);
+    Bit(in=in13, load=rli, out=out13);
+    Bit(in=in14, load=rli, out=out14);
+    Bit(in=in15, load=rli, out=out15);
+
+    Buffer(in=out0, out=out[0]);
+    Buffer(in=out1, out=out[1]);
+    Buffer(in=out2, out=out[2]);
+    Buffer(in=out3, out=out[3]);
+    Buffer(in=out4, out=out[4]);
+    Buffer(in=out5, out=out[5]);
+    Buffer(in=out6, out=out[6]);
+    Buffer(in=out7, out=out[7]);
+    Buffer(in=out8, out=out[8]);
+    Buffer(in=out9, out=out[9]);
+    Buffer(in=out10, out=out[10]);
+    Buffer(in=out11, out=out[11]);
+    Buffer(in=out12, out=out[12]);
+    Buffer(in=out13, out=out[13]);
+    Buffer(in=out14, out=out[14]);
+    Buffer(in=out15, out=out[15]);
+
+    
+
+    
+    
 }
