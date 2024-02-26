@@ -24,23 +24,40 @@ CHIP PC {
     Or(a=loic, b=reset, out=rli);
 
     //1bit PC Block
-    Not(in=out0, out=nout0);
-    Mux(a=nout0, b=in[0], sel=load, out=ink0);
-    Mux(a=out0, b=in[1], sel=load, out=ink1);
-    Mux(a=out1, b=in[2], sel=load, out=ink2);
-    Mux(a=out2, b=in[3], sel=load, out=ink3);
-    Mux(a=out3, b=in[4], sel=load, out=ink4);
-    Mux(a=out4, b=in[5], sel=load, out=ink5);
-    Mux(a=out5, b=in[6], sel=load, out=ink6);
-    Mux(a=out6, b=in[7], sel=load, out=ink7);
-    Mux(a=out7, b=in[8], sel=load, out=ink8);
-    Mux(a=out8, b=in[9], sel=load, out=ink9);
-    Mux(a=out9, b=in[10], sel=load, out=ink10);
-    Mux(a=out10, b=in[11], sel=load, out=ink11);
-    Mux(a=out11, b=in[12], sel=load, out=ink12);
-    Mux(a=out12, b=in[13], sel=load, out=ink13);
-    Mux(a=out13, b=in[14], sel=load, out=ink14);
-    Mux(a=out14, b=in[15], sel=load, out=ink15);
+    FullAdder(a=out0, b=false, c=true, sum=ic0, carry=c0);
+    FullAdder(a=out1, b=false, c=c0, sum=ic1, carry=c1);
+    FullAdder(a=out2, b=false, c=c1, sum=ic2, carry=c2);
+    FullAdder(a=out3, b=false, c=c2, sum=ic3, carry=c3);
+    FullAdder(a=out4, b=false, c=c3, sum=ic4, carry=c4);
+    FullAdder(a=out5, b=false, c=c4, sum=ic5, carry=c5);
+    FullAdder(a=out6, b=false, c=c5, sum=ic6, carry=c6);
+    FullAdder(a=out7, b=false, c=c6, sum=ic7, carry=c7);
+    FullAdder(a=out8, b=false, c=c7, sum=ic8, carry=c8);
+    FullAdder(a=out9, b=false, c=c8, sum=ic9, carry=c9);
+    FullAdder(a=out10, b=false, c=c9, sum=ic10, carry=c10);
+    FullAdder(a=out11, b=false, c=c10, sum=ic11, carry=c11);
+    FullAdder(a=out12, b=false, c=c11, sum=ic12, carry=c12);
+    FullAdder(a=out13, b=false, c=c12, sum=ic13, carry=c13);
+    FullAdder(a=out14, b=false, c=c13, sum=ic14, carry=c14);
+    FullAdder(a=out15, b=false, c=c14, sum=ic15, carry=c15);
+
+
+    Mux(a=ic0, b=in[0], sel=load, out=ink0);
+    Mux(a=ic1, b=in[1], sel=load, out=ink1);
+    Mux(a=ic2, b=in[2], sel=load, out=ink2);
+    Mux(a=ic3, b=in[3], sel=load, out=ink3);
+    Mux(a=ic4, b=in[4], sel=load, out=ink4);
+    Mux(a=ic5, b=in[5], sel=load, out=ink5);
+    Mux(a=ic6, b=in[6], sel=load, out=ink6);
+    Mux(a=ic7, b=in[7], sel=load, out=ink7);
+    Mux(a=ic8, b=in[8], sel=load, out=ink8);
+    Mux(a=ic9, b=in[9], sel=load, out=ink9);
+    Mux(a=ic10, b=in[10], sel=load, out=ink10);
+    Mux(a=ic11, b=in[11], sel=load, out=ink11);
+    Mux(a=ic12, b=in[12], sel=load, out=ink12);
+    Mux(a=ic13, b=in[13], sel=load, out=ink13);
+    Mux(a=ic14, b=in[14], sel=load, out=ink14);
+    Mux(a=ic15, b=in[15], sel=load, out=ink15);
 
 
     Mux(a=ink0, b=false, sel=reset, out=in0);
