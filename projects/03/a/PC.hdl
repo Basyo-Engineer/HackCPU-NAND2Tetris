@@ -78,21 +78,21 @@ CHIP PC {
     Mux(a=ink15, b=false, sel=reset, out=in15);
 
     Bit(in=in0, load=rli, out=out0);
-    Bit(in=in1, load=out0, out=out1);
-    Bit(in=in2, load=out1, out=out2);
-    Bit(in=in3, load=out2, out=out3);
-    Bit(in=in4, load=out3, out=out4);
-    Bit(in=in5, load=out4, out=out5);
-    Bit(in=in6, load=out5, out=out6);
-    Bit(in=in7, load=out6, out=out7);
-    Bit(in=in8, load=out7, out=out8);
-    Bit(in=in9, load=out8, out=out9);
-    Bit(in=in10, load=out9, out=out10);
-    Bit(in=in11, load=out10, out=out11);
-    Bit(in=in12, load=out11, out=out12);
-    Bit(in=in13, load=out12, out=out13);
-    Bit(in=in14, load=out13, out=out14);
-    Bit(in=in15, load=out14, out=out15);
+    Bit(in=in1, load=rli, out=out1);
+    Bit(in=in2, load=rli, out=out2);
+    Bit(in=in3, load=rli, out=out3);
+    Bit(in=in4, load=rli, out=out4);
+    Bit(in=in5, load=rli, out=out5);
+    Bit(in=in6, load=rli, out=out6);
+    Bit(in=in7, load=rli, out=out7);
+    Bit(in=in8, load=rli, out=out8);
+    Bit(in=in9, load=rli, out=out9);
+    Bit(in=in10, load=rli, out=out10);
+    Bit(in=in11, load=rli, out=out11);
+    Bit(in=in12, load=rli, out=out12);
+    Bit(in=in13, load=rli, out=out13);
+    Bit(in=in14, load=rli, out=out14);
+    Bit(in=in15, load=rli, out=out15);
 
     Buffer(in=out0, out=out[0]);
     Buffer(in=out1, out=out[1]);
