@@ -1,17 +1,19 @@
-    @100
-    D=A
-    @R0
-    M=D
-    @10
-    D=A
-    @R1
-    M=D
-    @0
-    D=A
-    @R2
-    M=D
-    @i
-    M=0
+@10
+D=A
+@R0
+M=D //R0=10
+@10
+D=A
+@R1
+M=D //R1=10
+@0
+D=A
+@R2
+M=D //R2=0
+@0
+D=A
+@i
+M=D //i=0
 (LOOP)
     // D = condition
     @i
