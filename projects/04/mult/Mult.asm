@@ -10,12 +10,14 @@
     D=A
     @R2
     M=D
+    @i
+    M=0
 (LOOP)
     // D = condition
-    @R0
-    D=A
+    @i
+    D=M
     @R1
-    D=D-A
+    D=D-M
     @LOOP_END
     D;JEQ
     // code
@@ -23,6 +25,8 @@
     D=M
     @R2
     M=M+D
+    @i
+    M=M+1
     @LOOP
     0;JMP
 (LOOP_END)
