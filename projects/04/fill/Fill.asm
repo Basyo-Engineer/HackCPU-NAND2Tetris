@@ -14,9 +14,41 @@
 //// Replace this comment with your code.
 (LOOP)
     // D = condition
+    //Xpointer = 0
+    @0
+    D=A
+    @X
+    M=D
+    //Ypointer = 0
+    @0
+    D=A
+    @Y
+    M=D
+
+    @65535
+    D=A
+    @BLK
+    M=D
+
+    @0
+    D=A
+    @WHT
+    M=D
+
     (WHITE)
-        
+        @KBD
+        D=M
+        @BLACK
+        D;JNE
+         
     (WHITE_END)
+    (BLACK)
+        @KBD
+        D=M
+        @WHITE
+        D;JEQ
+
+    (BLACK_END)
     @LOOP
     0;JMP
 (LOOP_END)
