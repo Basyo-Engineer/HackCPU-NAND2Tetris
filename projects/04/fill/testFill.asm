@@ -3,6 +3,8 @@
     //Memory Counter
     @MEM
     M=0
+    @R0
+    M=0
     (BLACK)
         @MEM
         D=M
