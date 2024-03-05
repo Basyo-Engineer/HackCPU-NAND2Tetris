@@ -14,41 +14,80 @@
 //// Replace this comment with your code.
 (LOOP)
     // D = condition
-    //Xpointer = 0
-    @0
-    D=A
-    @X
-    M=D
-    //Ypointer = 0
-    @0
-    D=A
-    @Y
-    M=D
-
-    @65535
-    D=A
-    @BLK
-    M=D
-
-    @0
-    D=A
-    @WHT
-    M=D
-
+    //Memory Counter
+    @MEM
+    M=0
+    
     (WHITE)
         @KBD
         D=M
         @BLACK
         D;JNE
-         
+        
+        @MEM
+        D=M
+        @8191
+        D=D-A
+        @MEMRST
+        D;JEQ
+        //SCREEN MEM fill White
+        @SCREEN
+        D=A
+        @MEM
+        D=D+A
+        @R0
+        M=D
+        @0
+        D=A
+        @R0
+        A=M
+        M=D
+        @MEM
+        M=M+1
+        @WHITE
+        A;JMP
     (WHITE_END)
+    
     (BLACK)
+    
         @KBD
         D=M
         @WHITE
         D;JEQ
+    
+        @MEM
+        D=M
+        @8191
+        D=D-A
+        @MEMRST
+        A;JEQ
+
+        //SCREEN MEM fill Black
+        @SCREEN
+        D=A
+        @MEM
+        D=D+A
+        @R0
+        M=D
+        @65535
+        D=A
+        @R0
+        A=M
+        M=D
+        @MEM
+        M=M+1
+        @BLACK
+        A;JMP
 
     (BLACK_END)
+    (MEMRST)
+        @0
+        D=A
+        @MEM
+        M=D
+        @LOOP
+        A;JMP
+    (MEMRST_END)
     @LOOP
     0;JMP
 (LOOP_END)
