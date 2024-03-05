@@ -11,13 +11,13 @@
         @8191
         D=D-A
         @MEMRST
-        A;JEQ
+        D;JEQ
 
         //SCREEN MEM fill Black
         @SCREEN
         D=A
         @MEM
-        D=D+A
+        D=D+M
         @R0
         M=D
         @65535
@@ -28,17 +28,7 @@
         @MEM
         M=M+1
         @BLACK
-        A;JMP
+        0;JMP
 
     (BLACK_END)
-    (MEMRST)
-        @0
-        D=A
-        @MEM
-        M=D
-        @LOOP
-        A;JMP
-    (MEMRST_END)
-    @LOOP
-    0;JMP
 (LOOP_END)
