@@ -19,6 +19,10 @@
     M=0
     
     (WHITE)
+        @MEM
+        D=M
+        @MEMRST
+        D;JNE
         @KBD
         D=M
         @BLACK
@@ -30,54 +34,56 @@
         D=D-A
         @MEMRST
         D;JEQ
-        //SCREEN MEM fill White
+
+        //SCREEN MEM fill Black
         @SCREEN
         D=A
         @MEM
-        D=D+A
+        D=D+M
         @R0
         M=D
-        @0
-        D=A
+        D=0
         @R0
         A=M
         M=D
         @MEM
         M=M+1
         @WHITE
-        A;JMP
+        0;JMP
     (WHITE_END)
     
     (BLACK)
-    
+        @MEM
+        D=M
+        @MEMRST
+        D;JNE
         @KBD
         D=M
         @WHITE
         D;JEQ
-    
+        
         @MEM
         D=M
         @8191
         D=D-A
         @MEMRST
-        A;JEQ
-
+        D;JEQ
+        
         //SCREEN MEM fill Black
         @SCREEN
         D=A
         @MEM
-        D=D+A
+        D=D+M
         @R0
         M=D
-        @65535
-        D=A
+        D=-1
         @R0
         A=M
         M=D
         @MEM
         M=M+1
         @BLACK
-        A;JMP
+        0;JMP
 
     (BLACK_END)
     (MEMRST)
@@ -86,7 +92,7 @@
         @MEM
         M=D
         @LOOP
-        A;JMP
+        0;JMP
     (MEMRST_END)
     @LOOP
     0;JMP
