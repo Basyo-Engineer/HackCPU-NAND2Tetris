@@ -19,10 +19,6 @@
     M=0
     
     (WHITE)
-        @MEM
-        D=M
-        @MEMRST
-        D;JNE
         @KBD
         D=M
         @BLACK
@@ -53,10 +49,6 @@
     (WHITE_END)
     
     (BLACK)
-        @MEM
-        D=M
-        @MEMRST
-        D;JNE
         @KBD
         D=M
         @WHITE
