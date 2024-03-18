@@ -33,27 +33,31 @@ CHIP CPU {
 
     PARTS:
     //// Replace this comment with your code.
-        PC(in=, load=, inc=, reset=reset, out=pc[0..15]);
-        //A instruction
-        Not(in=instruction[15], out=LoadA);
-        Register(in=inA, load=LoadA, out=outA);
-        
-        //D register
-        Register(in=outALU, load=instruction[15], out=outD);
-        
-        //inputA register select
-        Mux16(a=outALU, b=instruction[0..15], sel=LoadA, out=inA);
 
-        //inALU, AorM
-        Mux16(a=, b=, sel=instruction[], out=);
-        //ALU        
-        ALU(x=outD, y=, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outALU, zr=, ng=);
-
-        
         //decoder
-        Not(in=instruction[15], out=insC);
-        And16(a=instruction[0..14], b=insC, out=);
+        Not(in=instruction[15], out=insA);
+        And16(a=instruction[0..15], b=insA, out=inA);
+        And16(a=instruction[0..15], b=instruction[15], out=outIns);
 
 
-        //
+        //inA Mux
+        Mux16(a=instruction[0..15], b=outALU, sel=instruction[15], out=inA);
+        //A reg
+        Register(in=inA, load=loadA, out=outA);
+
+        //D reg
+        Register(in=outALU, load=loadD, out=outD);
+
+        //A or M Mux
+        Mux16(a=outA, b=inM, sel=loadAM, out=outAM);
+
+        //ALU
+        ALU(x=outD, y=outAM, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outALU, zr=zr, ng=ng);
+        
+        //loadA
+        Or(a=insA, b=instruction[5], out=loadA);
+        //loadD
+        Or(a=instruction[4], b=false, out=loadD);
+        //loadM
+        
 }
