@@ -33,4 +33,27 @@ CHIP CPU {
 
     PARTS:
     //// Replace this comment with your code.
+        PC(in=, load=, inc=, reset=reset, out=pc[0..15]);
+        //A instruction
+        Not(in=instruction[15], out=LoadA);
+        Register(in=inA, load=LoadA, out=outA);
+        
+        //D register
+        Register(in=outALU, load=instruction[15], out=outD);
+        
+        //inputA register select
+        Mux16(a=outALU, b=instruction[0..15], sel=LoadA, out=inA);
+
+        //inALU, AorM
+        Mux16(a=, b=, sel=instruction[], out=);
+        //ALU        
+        ALU(x=outD, y=, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outALU, zr=, ng=);
+
+        
+        //decoder
+        Not(in=instruction[15], out=insC);
+        And16(a=instruction[0..14], b=insC, out=);
+
+
+        //
 }
