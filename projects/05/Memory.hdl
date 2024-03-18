@@ -21,9 +21,9 @@ CHIP Memory {
     PARTS:
     //Muxでloadの選択をする
 
-        DMux(in=load, sel=address[14], a=l16, b=ls0);
-        DMux(in=ls0, sel=address[13], a=ls, b=lk);
-        RAM16K(in=in[0..15], load=l16, address=address[0..13], out=out0);
+        DMux4Way(in=load, sel=address[13..14], a=lr1, b=lr2, c=ls, d=lk);
+        Or(a=lr1, b=lr2, out=lr);
+        RAM16K(in=in[0..15], load=lr, address=address[0..13], out=out0);
         Screen(in=in[0..15], load=ls, address=address[0..12], out=out1);
         Keyboard(out=out2);
         //Keyborad register
