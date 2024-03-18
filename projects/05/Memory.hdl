@@ -30,6 +30,5 @@ CHIP Memory {
         //Upper 3btis decord
         //1word by register
         Register(in=out2, load=lk, out=out3);
-        Mux16(a=out0, b=out1, sel=address[14], out=mem1);
-        Or16(a=mem1, b=out3, out=out[0..15]);
+        Mux4Way16(a=out0, b=out0, c=out1, d=out2, sel=address[13..14], out=out[0..15]);
 }
