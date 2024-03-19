@@ -34,30 +34,25 @@ CHIP CPU {
     PARTS:
     //// Replace this comment with your code.
 
-        //decoder
-        Not(in=instruction[15], out=insA);
-        And16(a=instruction[0..15], b=insA, out=inA);
-        And16(a=instruction[0..15], b=instruction[15], out=outIns);
+    //decoder
+        //circleC instruction
+        //Pin of select instruction[0..15] or outALU
+        Not(in=instruction[15], out=MuxAIns);
+        //Load A register
+        Or(a=MuxAIns, b=instruction[5], out=LoadA);
+        //Select A or M
+        Or(a=instruction[12], b=false, out=SelAM);
+        //Load D register
+        Or(a=instruction[1], b=false, out=LoadD);
+        //jump address
+        Or(a=zr, b=ng, out=outs);
+        Not(in=outs, out=plus);
+        //plus flag
+        Bit(in=plus, load=true, out=plusf);
+        //zero flag
+        Bit(in=, load=, out=);
 
 
-        //inA Mux
-        Mux16(a=instruction[0..15], b=outALU, sel=instruction[15], out=inA);
-        //A reg
-        Register(in=inA, load=loadA, out=outA);
-
-        //D reg
-        Register(in=outALU, load=loadD, out=outD);
-
-        //A or M Mux
-        Mux16(a=outA, b=inM, sel=loadAM, out=outAM);
-
-        //ALU
-        ALU(x=outD, y=outAM, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outALU, zr=zr, ng=ng);
-        
-        //loadA
-        Or(a=insA, b=instruction[5], out=loadA);
-        //loadD
-        Or(a=instruction[4], b=false, out=loadD);
-        //loadM
-        
+    //ALU
+    ALU(x=, y=, zx=, nx=, zy=, ny=, f=, no=, out=, zr=zr, ng=ng);
 }
