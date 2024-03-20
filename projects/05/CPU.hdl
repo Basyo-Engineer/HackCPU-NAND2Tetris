@@ -44,13 +44,39 @@ CHIP CPU {
         Or(a=instruction[12], b=false, out=SelAM);
         //Load D register
         Or(a=instruction[1], b=false, out=LoadD);
+        //Load M
+        Or(a=instruction[3], b=false, out=LoadM);
+        //address M
+        Or16(a=outA, b=false, out=);
+
+
         //jump address
+        //plus by zero NOR minus
         Or(a=zr, b=ng, out=outs);
         Not(in=outs, out=plus);
         //plus flag
         Bit(in=plus, load=true, out=plusf);
         //zero flag
-        Bit(in=, load=, out=);
+        Bit(in=zr, load=true, out=zerof);
+        //sign flag
+        Bit(in=ng, load=true, out=singf);
+
+        //when minus
+        And(a=instruction[2], b=singf, out=jlt);
+        //when zero
+        And(a=instruction[1], b=zerof, out=jeq);
+        //when plus
+        And(a=instruction[0], b=plusf, out=jgt);
+        //when zero "以上"
+        Or(a=plusf, b=zerof, out=zeroup);
+        And(a=instruction[1], b=instruction[0], out=jge1);
+        And(a=zeroup, b=jge1, out=jge);
+        //when not zero
+        And(a=instruction[0], b=instruction[2], out=jne1);
+        Not(in=zerof, out=ez);
+        And(a=jne1, b=ez, out=jne);
+        //when low zero
+
 
 
     //ALU
