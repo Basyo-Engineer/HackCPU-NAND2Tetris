@@ -5,4 +5,5 @@ CHIP insToComp {
 
     PARTS:
         And(a=in[0], b=in[], out=out);
+        
 }
