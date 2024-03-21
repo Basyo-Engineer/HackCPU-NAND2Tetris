@@ -1,0 +1,8 @@
+CHIP insToComp {
+    IN in[16];
+
+    OUT out[6];
+
+    PARTS:
+        And(a=in[0], b=in[], out=out);
+}
