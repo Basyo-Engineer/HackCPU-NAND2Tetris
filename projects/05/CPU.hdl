@@ -59,5 +59,7 @@ CHIP CPU {
         //loadD
         Or(a=instruction[4], b=false, out=loadD);
         //loadM
-        
+        Or(a=instruction[3], b=false, out=writeM);
+        //addressM
+        sixtTofift(in=outA, out=addressM[0..14]);    
 }
