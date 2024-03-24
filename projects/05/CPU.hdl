@@ -38,6 +38,7 @@ CHIP CPU {
         Not(in=instruction[15], out=insA);
         And16(a=instruction[0..15], b=insA, out=inA);
         And16(a=instruction[0..15], b=instruction[15], out=outIns);
+        
 
 
         //inA Mux
