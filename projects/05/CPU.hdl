@@ -34,24 +34,59 @@ CHIP CPU {
     PARTS:
     //// Replace this comment with your code.
 
+<<<<<<< HEAD
         //decoder
         Not(in=instruction[15], out=insA);
         And16(a=instruction[0..15], b=insA, out=inA);
         And16(a=instruction[0..15], b=instruction[15], out=outIns);
         
+=======
+    //decoder
+        //circleC instruction
+        //Pin of select instruction[0..15] or outALU
+        Not(in=instruction[15], out=MuxAIns);
+        //Load A register
+        Or(a=MuxAIns, b=instruction[5], out=LoadA);
+        //Select A or M
+        Or(a=instruction[12], b=false, out=SelAM);
+        //Load D register
+        Or(a=instruction[1], b=false, out=LoadD);
+        //Load M
+        Or(a=instruction[3], b=false, out=LoadM);
+        //address M
+        Or16(a=outA, b=false, out=);
+>>>>>>> d45885001b99e75ac9fac55195704c921e20614e
 
 
-        //inA Mux
-        Mux16(a=instruction[0..15], b=outALU, sel=instruction[15], out=inA);
-        //A reg
-        Register(in=inA, load=loadA, out=outA);
+        //jump address
+        //plus by zero NOR minus
+        Or(a=zr, b=ng, out=outs);
+        Not(in=outs, out=plus);
+        //plus flag
+        Bit(in=plus, load=true, out=plusf);
+        //zero flag
+        Bit(in=zr, load=true, out=zerof);
+        //sign flag
+        Bit(in=ng, load=true, out=singf);
 
-        //D reg
-        Register(in=outALU, load=loadD, out=outD);
+        //when minus
+        And(a=instruction[2], b=singf, out=jlt);
+        //when zero
+        And(a=instruction[1], b=zerof, out=jeq);
+        //when plus
+        And(a=instruction[0], b=plusf, out=jgt);
+        //when zero "以上"
+        Or(a=plusf, b=zerof, out=zeroup);
+        And(a=instruction[1], b=instruction[0], out=jge1);
+        And(a=zeroup, b=jge1, out=jge);
+        //when not zero
+        And(a=instruction[0], b=instruction[2], out=jne1);
+        Not(in=zerof, out=ez);
+        And(a=jne1, b=ez, out=jne);
+        //when low zero
 
-        //A or M Mux
-        Mux16(a=outA, b=inM, sel=loadAM, out=outAM);
 
+<<<<<<< HEAD
         //ALU
         ALU(x=outD, y=outAM, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outALU, zr=zr, ng=ng);
         
@@ -65,4 +100,9 @@ CHIP CPU {
         //addressM
         sixtTofift(in=outA, out=addressM[0..14]);
 
+=======
+
+    //ALU
+    ALU(x=, y=, zx=, nx=, zy=, ny=, f=, no=, out=, zr=zr, ng=ng);
+>>>>>>> d45885001b99e75ac9fac55195704c921e20614e
 }
