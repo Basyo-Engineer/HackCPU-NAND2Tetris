@@ -33,8 +33,6 @@ CHIP CPU {
 
     PARTS:
     //// Replace this comment with your code.
-
-        
         
 
 
@@ -65,16 +63,33 @@ CHIP CPU {
         And(a=jne1, b=ez, out=jne);
         //when low zero
 
+        //instruction A
+        Not(in=instruction[15], out=insA);
+        oneToSixt(in=insA, out=insAs);
+        And16(a=instruction[0..15], b=insAs, out=inA);
 
-        //ALU
-        //ALU(x=outD, y=outAM, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outALU, zr=zr, ng=ng);
+        //for C instruction
+        And(a=instruction[15], b=, out=out);
+        //select outALU or instruction
+        Mux16(a=outALU b=inA, sel=insA, out=inA);
+        //A reg
+        Register(in=inA, load=loadA, out=outA);     
         
+        //D reg
+        Register(in=outALU, load=loadD, out=outD);
+
+        //select A or M
+        Mux16(a=outA, b=inM, sel=selAM, out=outAM);
+        //ALU
+        ALU(x=outD, y=outAM, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no, out=outALU, zr=zr, ng=ng);
+        
+        //decod
         //loadA
-        Or(a=insA, b=instruction[5], out=loadA);
+        Or(a=insA, b=, out=loadA);
         //loadD
-        Or(a=instruction[4], b=false, out=loadD);
+        Or(a=, b=false, out=loadD);
         //loadM
-        Or(a=instruction[3], b=false, out=writeM);
+        Or(a=, b=false, out=writeM);
         
         //addressM
         sixtTofift(in=outA, out=addressM[0..14]);
