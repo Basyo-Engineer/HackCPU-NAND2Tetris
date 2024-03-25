@@ -102,7 +102,7 @@ CHIP CPU {
         //select outALU or instruction
         Mux16(a=outALU b=inA, sel=insA, out=inA);
         //A reg
-        Register(in=inA, load=loadA, out=outA)     
+        Register(in=inA, load=loadA, out=outA);   
         
         //D reg
         Register(in=outALU, load=loadD, out=outD);
