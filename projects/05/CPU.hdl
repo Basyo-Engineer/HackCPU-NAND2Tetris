@@ -92,7 +92,7 @@ CHIP CPU {
 
         //PC
         PC(in=outA, load=loadPC, inc=true, reset=reset, out=outpc);
-        sixtTofift(in=outpc, out=PC[0..14]);
+        sixtTofift(in=outpc, out=pc[0..14]);
 
         //instruction A
         Not(in=instruction[15], out=insA);
@@ -102,7 +102,7 @@ CHIP CPU {
         //select outALU or instruction
         Mux16(a=outALU b=inA, sel=insA, out=inA);
         //A reg
-        Register(in=inA, load=loadA, out=outA);     
+        Register(in=inA, load=loadA, out=outA)     
         
         //D reg
         Register(in=outALU, load=loadD, out=outD);
