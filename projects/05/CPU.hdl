@@ -34,7 +34,21 @@ CHIP CPU {
     PARTS:
     //// Replace this comment with your code.
         
+        //C instruction
+        And(a=instruction[15], b=instruction[12], out=selAM);
+        And(a=instruction[15], b=instruction[11], out=zx);
+        And(a=instruction[15], b=instruction[10], out=nx);
+        And(a=instruction[15], b=instruction[9], out=zy);
+        And(a=instruction[15], b=instruction[8], out=ny);
+        And(a=instruction[15], b=instruction[7], out=f);
+        And(a=instruction[15], b=instruction[6], out=no);
 
+        And(a=instruction[15], b=instruction[5], out=d1);
+        And(a=instruction[15], b=instruction[4], out=d2);
+        And(a=instruction[15], b=instruction[3], out=d3);
+        And(a=instruction[15], b=instruction[2], out=j1);
+        And(a=instruction[15], b=instruction[1], out=j2);
+        And(a=instruction[15], b=instruction[0], out=j3);
 
         //jump address
         //plus by zero NOR minus
@@ -48,28 +62,43 @@ CHIP CPU {
         Bit(in=ng, load=true, out=singf);
 
         //when minus
-        And(a=, b=singf, out=jlt);
+        And(a=j1, b=singf, out=jlt);
         //when zero
-        And(a=, b=zerof, out=jeq);
+        And(a=j2, b=zerof, out=jeq);
         //when plus
-        And(a=, b=plusf, out=jgt);
+        And(a=j3, b=plusf, out=jgt);
         //when zero "以上"
         Or(a=plusf, b=zerof, out=zeroup);
-        And(a=, b=, out=jge1);
+        And(a=j2, b=j3, out=jge1);
         And(a=zeroup, b=jge1, out=jge);
         //when not zero
-        And(a=, b=, out=jne1);
+        And(a=j1, b=j3, out=jne1);
         Not(in=zerof, out=ez);
         And(a=jne1, b=ez, out=jne);
         //when low zero
+        And(a=j1, b=j2, out=jle1);
+        Or(a=zerof, b=singf, out=jle2);
+        And(a=jle1, b=jle2, out=jle);
+        //jump
+        And(a=j1, b=j2, out=jmp1);
+        And(a=jmp1, b=j3, out=jmp);
+
+        Or(a=jgt, b=jeq, out=jins1);
+        Or(a=jge, b=jlt, out=jins2);
+        Or(a=jne, b=jle, out=jins3);
+        Or(a=jins1, b=jins2, out=jins4);
+        Or(a=jins3, b=jmp, out=jins5);
+        Or(a=jins4, b=jins5, out=loadPC);
+
+        //PC
+        PC(in=outA, load=loadPC, inc=true, reset=reset, out=outpc);
+        sixtTofift(in=outpc, out=PC[0..14]);
 
         //instruction A
         Not(in=instruction[15], out=insA);
         oneToSixt(in=insA, out=insAs);
         And16(a=instruction[0..15], b=insAs, out=inA);
 
-        //for C instruction
-        And(a=instruction[15], b=, out=out);
         //select outALU or instruction
         Mux16(a=outALU b=inA, sel=insA, out=inA);
         //A reg
@@ -80,16 +109,18 @@ CHIP CPU {
 
         //select A or M
         Mux16(a=outA, b=inM, sel=selAM, out=outAM);
+
         //ALU
         ALU(x=outD, y=outAM, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no, out=outALU, zr=zr, ng=ng);
-        
-        //decod
+        Or16(a=outALU, b=false, out=outM[0..15]);
+        //decoder
+
         //loadA
-        Or(a=insA, b=, out=loadA);
+        Or(a=insA, b=d1, out=loadA);
         //loadD
-        Or(a=, b=false, out=loadD);
+        Or(a=d2, b=false, out=loadD);
         //loadM
-        Or(a=, b=false, out=writeM);
+        Or(a=d3, b=false, out=writeM);
         
         //addressM
         sixtTofift(in=outA, out=addressM[0..14]);
