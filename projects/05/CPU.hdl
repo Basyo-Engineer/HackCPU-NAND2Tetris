@@ -100,7 +100,7 @@ CHIP CPU {
         And16(a=instruction[0..15], b=insAs, out=inA15);
 
         //select outALU or instruction
-        Mux16(a=outALU b=inA, sel=insA, out=inA);
+        Mux16(a=outALU, b=inA, sel=insA, out=inA);
         //A reg
         Register(in=inA15, load=loadA, out=outA);   
         
