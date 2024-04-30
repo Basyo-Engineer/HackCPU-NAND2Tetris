@@ -30,10 +30,13 @@ CHIP CPU {
         writeM,          // Write to M? 
         addressM[15],    // Address in data memory (of M)
         pc[15];          // Address of next instruction
-
+    
     PARTS:
     //// Replace this comment with your code.
-        
+        //A instruction
+        Not(in=instruction[15], out=Ainstruction);
+        oneToSixt(in=Ainstruction, out=Ainstruction16);
+        And16(a=Ainstruction16, b=instruction[0..15], out=inputInt);
         //C instruction
         And(a=instruction[15], b=instruction[12], out=selAM);
         And(a=instruction[15], b=instruction[11], out=zx);
@@ -42,25 +45,17 @@ CHIP CPU {
         And(a=instruction[15], b=instruction[8], out=ny);
         And(a=instruction[15], b=instruction[7], out=f);
         And(a=instruction[15], b=instruction[6], out=no);
-
-        And(a=instruction[15], b=instruction[5], out=d1);
+        And(a=instruction[15], b=instruction[5], out=d1); 
         And(a=instruction[15], b=instruction[4], out=d2);
         And(a=instruction[15], b=instruction[3], out=d3);
         And(a=instruction[15], b=instruction[2], out=j1);
         And(a=instruction[15], b=instruction[1], out=j2);
         And(a=instruction[15], b=instruction[0], out=j3);
 
-        //jump address
-        //plus by zero NOR minus
-        Or(a=zr, b=ng, out=outs);
-        Not(in=outs, out=plus);
-        //plus flag
-        Bit(in=plus, load=true, out=plusf);
-        //zero flag
-        Bit(in=zr, load=true, out=zerof);
-        //sign flag
-        Bit(in=ng, load=true, out=singf);
+        //Input to AReg, Instruction or outALU
+        Mux16(a=outALU, b=inputInt, sel=Ainstruction, out=inputAReg);
 
+<<<<<<< HEAD
         //when minus
         And(a=j1, b=singf, out=jlt);
         //when zero
@@ -109,20 +104,81 @@ CHIP CPU {
 
         //select A or M
         Mux16(a=outA, b=inM, sel=selAM, out=outAM);
+=======
+        //A Register
+        ARegister(in=inputAReg, load=loadA, out=outA);
+        //Input to ALU, outA or inM
+        Mux16(a=outA, b=inM, sel=selAM, out=inputALU);
+>>>>>>> 50f824caf1454d0dc3fe019fbfc852e9c07f7583
 
+        //D Register
+        DRegister(in=outALU, load=loadD, out=outD);
+    
         //ALU
-        ALU(x=outD, y=outAM, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no, out=outALU, zr=zr, ng=ng);
+        ALU(x=outD, y=inputALU, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no, out=outALU, zr=zr, ng=ng);
         Or16(a=outALU, b=false, out=outM[0..15]);
-        //decoder
-
-        //loadA
-        Or(a=insA, b=d1, out=loadA);
-        //loadD
-        Or(a=d2, b=false, out=loadD);
-        //loadM
+        //load
+        //A
+        Or(a=d1, b=Ainstruction, out=loadA);
+        //D
+        Or(a=d2, b=false, out=loadD);        
+        //M
         Or(a=d3, b=false, out=writeM);
-        
+
         //addressM
         sixtTofift(in=outA, out=addressM[0..14]);
+        
+        //PC
+        PC(in=outA, load=loadPC, inc=true, reset=reset, out=outPC);
+        sixtTofift(in=outPC, out=pc[0..14]);
 
+        //loadPC
+        //jump not pin
+        Not(in=j1, out=nj1);
+        Not(in=j2, out=nj2);
+        Not(in=j3, out=nj3);
+
+        //out condition pin
+        Or(a=ng, b=false, out=minus);
+        Or(a=zr, b=false, out=zero);
+        Or(a=ng, b=zr, out=outP);
+        Not(in=outP, out=plus);
+
+        //jgt
+        And(a=nj1, b=nj2, out=jgt1);
+        And(a=jgt1, b=j3, out=jgt2);
+        And(a=jgt2, b=plus, out=jgt);
+        //jeq
+        And(a=nj1, b=j2, out=jeq1);
+        And(a=jeq1, b=nj3, out=jeq2);
+        And(a=jeq2, b=zero, out=jeq);
+        //jge
+        And(a=nj1, b=j2, out=jge1);
+        And(a=jge1, b=j3, out=jge2);
+        Or(a=zero, b=plus, out=jge3);
+        And(a=jge2, b=jge3, out=jge);
+        //jlt
+        And(a=j1, b=nj2, out=jlt1);
+        And(a=jlt1, b=nj3, out=jlt2);
+        And(a=jlt2, b=minus, out=jlt);
+        //jne
+        And(a=j1, b=nj2, out=jne1);
+        And(a=jne1, b=j3, out=jne2);
+        Or(a=plus, b=minus, out=jne3);
+        And(a=jne2, b=jne3, out=jne);
+        //jle
+        And(a=j1, b=j2, out=jle1);
+        And(a=jle1, b=nj3, out=jle2);
+        Or(a=zero, b=minus, out=jle3);
+        And(a=jle2, b=jle3, out=jle);
+        //jump
+        And(a=j1, b=j2, out=jump1);
+        And(a=jump1, b=j3, out=jump);
+        
+        Or(a=jgt, b=jeq, out=loadPC1);
+        Or(a=jge, b=jlt, out=loadPC2);
+        Or(a=jne, b=jle, out=loadPC3);
+        Or(a=loadPC1, b=loadPC2, out=loadPC4);
+        Or(a=loadPC3, b=jump, out=loadPC5);
+        Or(a=loadPC4, b=loadPC5, out=loadPC);
 }
